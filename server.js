@@ -4,18 +4,115 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Generate 500 unique origins
-const realDomains = [];
-for (let i = 1; i <= 500; i++) {
-  realDomains.push(`https://domain${i}.sslip.io`);
-}
+// 100 real, widely-used domains
+const realDomains = [
+  "https://www.google.com",
+  "https://www.youtube.com",
+  "https://www.facebook.com",
+  "https://www.instagram.com",
+  "https://www.twitter.com",
+  "https://www.linkedin.com",
+  "https://www.amazon.com",
+  "https://www.netflix.com",
+  "https://www.microsoft.com",
+  "https://www.apple.com",
+  "https://www.cloudflare.com",
+  "https://www.wikipedia.org",
+  "https://www.reddit.com",
+  "https://www.yahoo.com",
+  "https://www.bing.com",
+  "https://www.github.com",
+  "https://www.stackoverflow.com",
+  "https://www.tiktok.com",
+  "https://www.adobe.com",
+  "https://www.paypal.com",
+  "https://www.salesforce.com",
+  "https://www.dropbox.com",
+  "https://www.spotify.com",
+  "https://www.wordpress.com",
+  "https://www.medium.com",
+  "https://www.quora.com",
+  "https://www.pinterest.com",
+  "https://www.zoom.us",
+  "https://www.slack.com",
+  "https://www.shopify.com",
+  "https://www.ebay.com",
+  "https://www.twitch.tv",
+  "https://www.cnn.com",
+  "https://www.bbc.com",
+  "https://www.nytimes.com",
+  "https://www.theguardian.com",
+  "https://www.forbes.com",
+  "https://www.imdb.com",
+  "https://www.booking.com",
+  "https://www.airbnb.com",
+  "https://www.uber.com",
+  "https://www.lyft.com",
+  "https://www.discord.com",
+  "https://www.roblox.com",
+  "https://www.salesforce.com",
+  "https://www.ibm.com",
+  "https://www.intel.com",
+  "https://www.oracle.com",
+  "https://www.hp.com",
+  "https://www.dell.com",
+  "https://www.nvidia.com",
+  "https://www.tesla.com",
+  "https://www.cisco.com",
+  "https://www.mozilla.org",
+  "https://www.okta.com",
+  "https://www.stripe.com",
+  "https://www.hubspot.com",
+  "https://www.zendesk.com",
+  "https://www.mailchimp.com",
+  "https://www.canva.com",
+  "https://www.figma.com",
+  "https://www.atlassian.com",
+  "https://www.digitalocean.com",
+  "https://www.heroku.com",
+  "https://www.vercel.com",
+  "https://www.netlify.com",
+  "https://www.cloudflarestatus.com",
+  "https://www.fastly.com",
+  "https://www.akamai.com",
+  "https://www.target.com",
+  "https://www.walmart.com",
+  "https://www.bestbuy.com",
+  "https://www.costco.com",
+  "https://www.homedepot.com",
+  "https://www.lowes.com",
+  "https://www.mcdonalds.com",
+  "https://www.starbucks.com",
+  "https://www.nike.com",
+  "https://www.adidas.com",
+  "https://www.zara.com",
+  "https://www.hm.com",
+  "https://www.ikea.com",
+  "https://www.etsy.com",
+  "https://www.weibo.com",
+  "https://www.baidu.com",
+  "https://www.aliexpress.com",
+  "https://www.alibaba.com",
+  "https://www.samsung.com",
+  "https://www.sony.com",
+  "https://www.snapchat.com",
+  "https://www.whatsapp.com",
+  "https://www.telegram.org",
+  "https://www.vimeo.com",
+  "https://www.soundcloud.com",
+  "https://www.coursera.org",
+  "https://www.udemy.com",
+  "https://www.khanacademy.org"
+];
+
 
 // Serve hero image same-origin
 app.use(express.static(__dirname));
 
 app.get("/test", (req, res) => {
   const count = parseInt(req.query.preconnectCount || "0", 10);
-  const selected = realDomains.slice(0, count);
+  const selected = realDomains.slice(0, Math.min(count, realDomains.length));
+
 
   let preconnects = "";
   for (const domain of selected) {
