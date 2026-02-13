@@ -175,6 +175,15 @@ app.get("/test", (req, res) => {
           <p>More layout content.</p>
         </div>
       </div>
+      <script>
+  const domains = ${JSON.stringify(selected)};
+
+  // Fire real concurrent requests
+  domains.forEach(domain => {
+    fetch(domain, { mode: "no-cors" }).catch(() => {});
+  });
+</script>
+
 
     </body>
   </html>
