@@ -156,6 +156,7 @@ app.get("/test", (req, res) => {
         height="900"
         alt="Hero"
         class="hero"
+        fetchpriority="high"
       />
 
       <div class="content">
