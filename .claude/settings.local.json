@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:www.debugbear.com)"
+      "WebFetch(domain:www.debugbear.com)",
+      "Bash(npm view:*)"
     ]
   }
 }
