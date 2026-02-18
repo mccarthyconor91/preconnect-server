@@ -5,9 +5,10 @@ const API_KEY = process.env.DEBUGBEAR_API_KEY;
 const PAGE_ID = process.env.DEBUGBEAR_PAGE_ID;
 const BASE_URL = "https://preconnect-server.onrender.com/test";
 
-// Generate 100 test points from 0 to 500 preconnects
-const TEST_COUNT = 100;
-const MAX_PRECONNECTS = 500;
+// Generate tests from 5 to 20 preconnects in increments of 5
+const START_PRECONNECTS = 5;
+const MAX_PRECONNECTS = 20;
+const INCREMENT = 5;
 const DELAY_BETWEEN_TESTS_MS = 2000; // 2 seconds between triggers to avoid rate limits
 
 if (!API_KEY) {
@@ -27,19 +28,20 @@ function sleep(ms) {
 }
 
 async function runTests() {
-  console.log(`Starting ${TEST_COUNT} tests with 0-${MAX_PRECONNECTS} preconnects`);
+  const testCount = (MAX_PRECONNECTS - START_PRECONNECTS) / INCREMENT + 1;
+  console.log(`Starting ${testCount} tests with ${START_PRECONNECTS}-${MAX_PRECONNECTS} preconnects (increment: ${INCREMENT})`);
   console.log(`Base URL: ${BASE_URL}`);
   console.log(`Page ID: ${PAGE_ID}`);
   console.log("---");
 
   const results = [];
+  let testNum = 0;
 
-  for (let i = 0; i < TEST_COUNT; i++) {
-    // Calculate preconnect count for this test (0, 5, 10, 15, ... 500)
-    const preconnectCount = Math.round((i / (TEST_COUNT - 1)) * MAX_PRECONNECTS);
+  for (let preconnectCount = START_PRECONNECTS; preconnectCount <= MAX_PRECONNECTS; preconnectCount += INCREMENT) {
+    testNum++;
     const testUrl = `${BASE_URL}?preconnectCount=${preconnectCount}`;
 
-    console.log(`[${i + 1}/${TEST_COUNT}] Testing with ${preconnectCount} preconnects...`);
+    console.log(`[${testNum}/${testCount}] Testing with ${preconnectCount} preconnects...`);
 
     try {
       const analysis = await debugbear.pages.analyze(PAGE_ID, {
@@ -63,7 +65,7 @@ async function runTests() {
     }
 
     // Wait between tests to avoid overwhelming the API
-    if (i < TEST_COUNT - 1) {
+    if (preconnectCount < MAX_PRECONNECTS) {
       await sleep(DELAY_BETWEEN_TESTS_MS);
     }
   }

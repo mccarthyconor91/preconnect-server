@@ -3,7 +3,10 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:www.debugbear.com)",
-      "Bash(npm view:*)"
+      "Bash(npm view:*)",
+      "WebFetch(domain:preconnect-server.onrender.com)",
+      "Bash(curl:*)",
+      "Bash(/tmp/check_certs2.sh)"
     ]
   }
 }
