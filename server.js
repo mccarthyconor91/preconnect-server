@@ -151,7 +151,7 @@ app.get("/test", (req, res) => {
       </nav>
 
       <img
-        src="/smallhero.jpg"
+        src="smallhero.jpg"
         width="1600"
         height="900"
         alt="Hero"
