@@ -5,10 +5,10 @@ const API_KEY = process.env.DEBUGBEAR_API_KEY;
 const PAGE_ID = process.env.DEBUGBEAR_PAGE_ID;
 const BASE_URL = "https://preconnect-server.onrender.com/test";
 
-// Generate tests from 5 to 20 preconnects in increments of 5
-const START_PRECONNECTS = 5;
-const MAX_PRECONNECTS = 20;
-const INCREMENT = 5;
+// Generate tests from 1 to 10 preconnects in increments of 1
+const START_PRECONNECTS = 1;
+const MAX_PRECONNECTS = 10;
+const INCREMENT = 1;
 const DELAY_BETWEEN_TESTS_MS = 2000; // 2 seconds between triggers to avoid rate limits
 
 if (!API_KEY) {
