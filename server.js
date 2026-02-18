@@ -151,12 +151,12 @@ app.get("/test", (req, res) => {
       </nav>
 
       <img
-        src="/hero.jpg"
+        src="/smallhero.jpg"
         width="1600"
         height="900"
         alt="Hero"
         class="hero"
-        fetchpriority="high"
+        fetchpriority="high" 
       />
 
       <div class="content">
