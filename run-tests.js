@@ -5,9 +5,9 @@ const API_KEY = process.env.DEBUGBEAR_API_KEY;
 const PAGE_ID = process.env.DEBUGBEAR_PAGE_ID;
 const BASE_URL = "https://preconnect-server.onrender.com/test";
 
-// Generate tests from 1 to 10 preconnects in increments of 1
-const START_PRECONNECTS = 1;
-const MAX_PRECONNECTS = 10;
+// Generate tests from 0 to 50 preconnects in increments of 1
+const START_PRECONNECTS = 0;
+const MAX_PRECONNECTS = 50;
 const INCREMENT = 1;
 const DELAY_BETWEEN_TESTS_MS = 2000; // 2 seconds between triggers to avoid rate limits
 
@@ -39,7 +39,7 @@ async function runTests() {
 
   for (let preconnectCount = START_PRECONNECTS; preconnectCount <= MAX_PRECONNECTS; preconnectCount += INCREMENT) {
     testNum++;
-    const testUrl = `${BASE_URL}?preconnectCount=${preconnectCount}`;
+    const testUrl = `${BASE_URL}?count=${preconnectCount}`;
 
     console.log(`[${testNum}/${testCount}] Testing with ${preconnectCount} preconnects...`);
 

@@ -4,13 +4,58 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Top 5 largest TLS certificate chains (verified Feb 2026)
+// Top 50 largest TLS certificate chains (verified Feb 2026)
 const heaviestCertDomains = [
-  "https://www.lidl.com",           // 8283 B
+  "https://www.lidl.com", // 8283 B
   "https://www.breadfinancial.com", // 8100 B
-  "https://www.victoriassecret.com",// 7639 B
-  "https://www.bread.com",          // 7612 B
-  "https://www.nordstrom.com",      // 7582 B
+  "https://www.everydayhealth.com", // 7839 B
+  "https://www.victoriassecret.com", // 7639 B
+  "https://www.bread.com", // 7612 B
+  "https://www.nordstrom.com", // 7582 B
+  "https://www.safeway.com", // 7368 B
+  "https://www.albertsons.com", // 7368 B
+  "https://www.youtube.com", // 7208 B
+  "https://www.ebay.com", // 7191 B
+  "https://www.macys.com", // 7088 B
+  "https://www.sainsburys.co.uk", // 6770 B
+  "https://www.tesco.com", // 6752 B
+  "https://www.ally.com", // 6746 B
+  "https://www.pnc.com", // 6655 B
+  "https://www.depositphotos.com", // 6635 B
+  "https://www.roblox.com", // 6627 B
+  "https://www.weibo.com", // 6435 B
+  "https://www.ea.com", // 6336 B
+  "https://www.runnersworld.com", // 6253 B
+  "https://www.bicycling.com", // 6253 B
+  "https://www.tdbank.com", // 6249 B
+  "https://www.canva.com", // 6118 B
+  "https://www.williams-sonoma.com", // 6025 B
+  "https://www.westelm.com", // 6025 B
+  "https://www.potterybarn.com", // 6025 B
+  "https://www.argos.co.uk", // 5969 B
+  "https://www.codeship.com", // 5840 B
+  "https://www.cbsnews.com", // 5806 B
+  "https://www.reuters.com", // 5797 B
+  "https://www.gettyimages.com", // 5754 B
+  "https://www.paypal.com", // 5731 B
+  "https://www.baidu.com", // 5644 B
+  "https://www.op.gg", // 5617 B
+  "https://www.atlassian.com", // 5580 B
+  "https://www.2k.com", // 5549 B
+  "https://www.aliexpress.com", // 5531 B
+  "https://www.n26.com", // 5481 B
+  "https://www.pinterest.com", // 5461 B
+  "https://www.target.com", // 5437 B
+  "https://www.engadget.com", // 5422 B
+  "https://www.marksandspencer.com", // 5369 B
+  "https://www.bloomingdales.com", // 5310 B
+  "https://www.amazon.com", // 5298 B
+  "https://www.zazzle.com", // 5259 B
+  "https://www.zelle.com", // 5248 B
+  "https://www.gamestop.com", // 5245 B
+  "https://www.fanatical.com", // 5244 B
+  "https://www.lululemon.com", // 5232 B
+  "https://www.currys.co.uk", // 5195 B
 ];
 
 
@@ -18,7 +63,7 @@ const heaviestCertDomains = [
 app.use(express.static(__dirname));
 
 app.get("/test", (req, res) => {
-  const count = Math.min(5, Math.max(0, parseInt(req.query.count || "0", 10)));
+  const count = Math.min(50, Math.max(0, parseInt(req.query.count || "0", 10)));
   const selected = heaviestCertDomains.slice(0, count);
 
   let preconnects = "";
@@ -52,11 +97,11 @@ app.get("/test", (req, res) => {
         <div>Preconnect Test</div>
         <div>
           <a href="/test?count=0"${count === 0 ? ' class="active"' : ''}>0</a>
-          <a href="/test?count=1"${count === 1 ? ' class="active"' : ''}>1</a>
-          <a href="/test?count=2"${count === 2 ? ' class="active"' : ''}>2</a>
-          <a href="/test?count=3"${count === 3 ? ' class="active"' : ''}>3</a>
-          <a href="/test?count=4"${count === 4 ? ' class="active"' : ''}>4</a>
-          <a href="/test?count=5"${count === 5 ? ' class="active"' : ''}>5</a>
+          <a href="/test?count=10"${count === 10 ? ' class="active"' : ''}>10</a>
+          <a href="/test?count=20"${count === 20 ? ' class="active"' : ''}>20</a>
+          <a href="/test?count=30"${count === 30 ? ' class="active"' : ''}>30</a>
+          <a href="/test?count=40"${count === 40 ? ' class="active"' : ''}>40</a>
+          <a href="/test?count=50"${count === 50 ? ' class="active"' : ''}>50</a>
         </div>
       </nav>
 
