@@ -18,13 +18,12 @@ const heaviestCertDomains = [
 app.use(express.static(__dirname));
 
 app.get("/test", (req, res) => {
-  const enablePreconnect = req.query.preconnect === "1";
+  const count = Math.min(5, Math.max(0, parseInt(req.query.count || "0", 10)));
+  const selected = heaviestCertDomains.slice(0, count);
 
   let preconnects = "";
-  if (enablePreconnect) {
-    for (const domain of heaviestCertDomains) {
-      preconnects += `<link rel="preconnect" href="${domain}" crossorigin>\n`;
-    }
+  for (const domain of selected) {
+    preconnects += `<link rel="preconnect" href="${domain}" crossorigin>\n`;
   }
 
   const html = `
@@ -33,7 +32,7 @@ app.get("/test", (req, res) => {
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Preconnect Test (${enablePreconnect ? "ON" : "OFF"})</title>
+      <title>Preconnect Test (${count})</title>
 
       ${preconnects}
 
@@ -41,6 +40,7 @@ app.get("/test", (req, res) => {
         body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
         nav { background: #111; color: white; padding: 16px 32px; display: flex; justify-content: space-between; }
         nav a { color: white; text-decoration: none; margin-left: 16px; }
+        nav a.active { background: #444; padding: 4px 8px; border-radius: 4px; }
         .hero { width: 100%; height: 80vh; object-fit: cover; display: block; }
         .content { max-width: 800px; margin: 40px auto; padding: 0 20px; }
         .card { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
@@ -51,8 +51,12 @@ app.get("/test", (req, res) => {
       <nav>
         <div>Preconnect Test</div>
         <div>
-          <a href="/test">OFF</a>
-          <a href="/test?preconnect=1">ON (5 heavy certs)</a>
+          <a href="/test?count=0"${count === 0 ? ' class="active"' : ''}>0</a>
+          <a href="/test?count=1"${count === 1 ? ' class="active"' : ''}>1</a>
+          <a href="/test?count=2"${count === 2 ? ' class="active"' : ''}>2</a>
+          <a href="/test?count=3"${count === 3 ? ' class="active"' : ''}>3</a>
+          <a href="/test?count=4"${count === 4 ? ' class="active"' : ''}>4</a>
+          <a href="/test?count=5"${count === 5 ? ' class="active"' : ''}>5</a>
         </div>
       </nav>
 
@@ -72,19 +76,14 @@ app.get("/test", (req, res) => {
       <div id="hero-container"></div>
 
       <div class="content">
-        <h1>Preconnect: ${enablePreconnect ? "ON (5 domains)" : "OFF"}</h1>
-        <p>
-          ${enablePreconnect
-            ? `Preconnecting to 5 domains with heaviest TLS cert chains (~7.5-8.3 KB each).`
-            : `No preconnects. Baseline test.`}
-        </p>
+        <h1>Preconnects: ${count}</h1>
         <p><em>Hero image delayed 200ms to allow preconnect activity.</em></p>
 
         <div class="card">
-          <h2>Domains</h2>
-          <ul>
-            ${heaviestCertDomains.map(d => `<li>${d}</li>`).join('\n            ')}
-          </ul>
+          <h2>Active Preconnects</h2>
+          ${count === 0
+            ? '<p>None (baseline)</p>'
+            : `<ul>${selected.map(d => '<li>' + d + '</li>').join('\n            ')}</ul>`}
         </div>
       </div>
 
