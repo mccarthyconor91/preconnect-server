@@ -64,12 +64,16 @@ app.use(express.static(__dirname));
 
 app.get("/test", (req, res) => {
   const count = Math.min(50, Math.max(0, parseInt(req.query.count || "0", 10)));
+  const delay = Math.min(5000, Math.max(0, parseInt(req.query.delay || "200", 10)));
+  const priority = ["low", "high", "auto"].includes(req.query.priority) ? req.query.priority : null;
   const selected = heaviestCertDomains.slice(0, count);
 
   let preconnects = "";
   for (const domain of selected) {
     preconnects += `<link rel="preconnect" href="${domain}" crossorigin>\n`;
   }
+
+  const priorityAttr = priority ? ` fetchpriority="${priority}"` : "";
 
   const html = `
   <!doctype html>
@@ -83,7 +87,7 @@ app.get("/test", (req, res) => {
 
       <style>
         body { margin: 0; font-family: system-ui, -apple-system, sans-serif; }
-        nav { background: #111; color: white; padding: 16px 32px; display: flex; justify-content: space-between; }
+        nav { background: #111; color: white; padding: 16px 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
         nav a { color: white; text-decoration: none; margin-left: 16px; }
         nav a.active { background: #444; padding: 4px 8px; border-radius: 4px; }
         .hero { width: 100%; height: 80vh; object-fit: cover; display: block; }
@@ -106,23 +110,22 @@ app.get("/test", (req, res) => {
       </nav>
 
       <script>
-        // 200ms delay before injecting hero image - gives preconnects time to start
         setTimeout(() => {
           const img = document.createElement('img');
           img.src = 'smallhero.jpg';
           img.width = 1600;
           img.height = 900;
           img.alt = 'Hero';
-          img.className = 'hero';
+          img.className = 'hero';${priority ? `\n          img.fetchPriority = '${priority}';` : ''}
           document.getElementById('hero-container').appendChild(img);
-        }, 200);
+        }, ${delay});
       </script>
 
       <div id="hero-container"></div>
 
       <div class="content">
         <h1>Preconnects: ${count}</h1>
-        <p><em>Hero image delayed 200ms to allow preconnect activity.</em></p>
+        <p><em>Delay: ${delay}ms | Priority: ${priority || 'default'}</em></p>
 
         <div class="card">
           <h2>Active Preconnects</h2>
